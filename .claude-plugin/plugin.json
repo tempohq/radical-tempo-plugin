@@ -1,0 +1,30 @@
+{
+  "name": "radical-tempo",
+  "displayName": "Radical Tempo",
+  "version": "1.25.0",
+  "description": "Turn long-form video into clips, covers, and posts, and read back how they perform across YouTube, TikTok, Instagram, Facebook, LinkedIn, and X.",
+  "author": {
+    "name": "Radical Tempo",
+    "email": "support@radicaltempo.com",
+    "url": "https://radicaltempo.com"
+  },
+  "homepage": "https://radicaltempo.com",
+  "repository": "https://github.com/tempohq/radical-tempo-plugin",
+  "license": "Apache-2.0",
+  "keywords": [
+    "video",
+    "clips",
+    "analytics",
+    "youtube",
+    "tiktok",
+    "instagram",
+    "facebook",
+    "linkedin",
+    "x"
+  ],
+  "icon": "./assets/icon-512x512.png",
+  "documentationUrl": "https://app.radicaltempo.com/docs",
+  "supportUrl": "https://app.radicaltempo.com/docs/connect-an-ai-tool",
+  "privacyPolicyUrl": "https://radicaltempo.com/privacy-policy",
+  "termsOfServiceUrl": "https://radicaltempo.com/terms-of-use"
+}
