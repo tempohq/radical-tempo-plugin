@@ -221,6 +221,14 @@ published or scheduled from the proposal alone.
 A post's publish time can be set **only** this way — `update_post` has no field
 for it.
 
+**Without the card.** When your tools have no `propose_publish`, nothing shows
+the user a card. Put the post, its platforms, and the time to the user, and call
+`execute_publish_post` once per post when they say yes, with the same `mode`,
+`plainDateTime`, and `timeZone`. Name each post by its `assetId` and `postType`,
+the pair `get_video` and `list_posts` show. Skip the question only when they
+have told you not to ask. Everything below about re-timing and several posts
+holds for `execute_publish_post` the same way.
+
 A post that is already scheduled can be immediately published, or have its
 schedule changed, by using the `propose_publish` tool again. The same workflow
 applies, so never cancel a schedule to re-time it. A second `propose_publish`

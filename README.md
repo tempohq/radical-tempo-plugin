@@ -17,6 +17,8 @@ account, so you can work on a brand's video library from a chat.
   LinkedIn, or X. Publishing always proposes first and asks for your approval.
 - Review performance: views, watch time, retention, and which clips won or lost
   against similar ones.
+- Plan the week: read what the weekly check measured on the brand's posts, plan
+  one week with one experiment, and propose the posts for your approval.
 - Save a memory about a brand, so later work keeps its context.
 
 Try asking:
@@ -24,6 +26,12 @@ Try asking:
 - "Which of my posts did best over the last 30 days, and why?"
 - "Find the part of my videos where we talk about procrastination."
 - "Make vertical clips from my latest video."
+- "What should I post this week?"
+
+Start with a video in the brand and a platform connected in the app. YouTube,
+TikTok, Instagram, and Facebook report analytics, so posts there feed the weekly
+plan. The [setup guide](https://app.radicaltempo.com/docs/connect-an-ai-tool)
+walks through the first week.
 
 ## Before you start
 
