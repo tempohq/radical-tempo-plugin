@@ -6,8 +6,9 @@ description: >-
   and post text, review them, propose one week's posts for the user's approval,
   submit what you expect to hold as claims, and read last week's claims against
   the new check. Also the answer to "what next?" for a brand that just
-  connected, and how to schedule the tick on Cowork and ChatGPT. Load when the
-  user asks what to post this week, to plan or run their week, to manage their
+  connected, and how to schedule the tick on Cowork and ChatGPT. A brand with a
+  campaign runs its batch from `campaign-manager` instead. Load when the user
+  asks what to post this week, to plan or run their week, to manage their
   channel, what the manager planned and why, how last week's experiment did, or
   what to do next after connecting. Triggers: channel manager, weekly plan, plan
   my week, run my channel, what should I post, what next, I just connected, now
@@ -29,6 +30,9 @@ approval.
 - Quote numbers from a tool's answer. Never compute, pool, or round one into a
   new claim.
 - Speak to the user in their words: a video, a clip, a post, the weekly check.
+- Call `get_campaign` with `brandId` and `status: ["active"]` first. When it
+  lists a campaign, load the `campaign-manager` skill and run that campaign's
+  batch instead of this tick.
 
 ## "What next?" for a brand that just connected
 
@@ -39,6 +43,8 @@ that matches and offer that action.
 | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `list_brands` shows no videos (`assetCount` of `0`)                                        | Bring in a video: `import_video` from a link, or an upload. Nothing else works until one is in.                                                                                                                                                                                                             |
 | `publishConnections` is empty                                                              | Connect a platform in the Radical Tempo app, under **Connect** in the brand sidebar. No tool here connects one. Meanwhile, clips can be made.                                                                                                                                                               |
+| Every entry in `publishConnections` has `canPublish: false`                                | Read each `publishBlockedReason`. For `no_target_selected`, call `list_publish_targets`, ask the user which page or profile, then `set_publish_target`. For `needs_reconnect`, the user reconnects the account under **Connect**. Meanwhile, clips can be made.                                             |
+| `get_campaign` lists no `active` campaign                                                  | Offer a campaign: one strategy that draws a batch of clips and posts each week, for the user to approve. When the user agrees, load the `campaign-manager` skill and run its setup. When they decline, go on to the next row.                                                                               |
 | `list_shelf` shows no clips and no scheduled posts                                         | Generate clips from the newest video with `generate_clips`.                                                                                                                                                                                                                                                 |
 | Clips on the shelf, nothing published recently                                             | Propose the best shelf clips (step 5). Posting is what the weekly check measures.                                                                                                                                                                                                                           |
 | `get_channel_readout` and `get_playbook` both answer `available: false`                    | Quote each `unavailable_reason`. Say what the first weekly check needs: published posts on a platform that reports analytics, enough of them to compare. Then offer the action from the rows above that still applies.                                                                                      |
@@ -58,12 +64,19 @@ Call these, then summarize in 4 lines: what held, what last week's claims became
 (step 6), what is ready, and what the user told you.
 
 - `list_brands`: when `publishConnections` is empty, say nothing can go out
-  until the user connects a platform, and stop after step 4.
+  until the user connects a platform, and stop after step 4. Plan posts only on
+  a platform whose entry has `canPublish: true`; for one with
+  `no_target_selected`, ask the user which page or profile and call
+  `set_publish_target` before you plan there.
 - `get_channel_readout`: what the weekly check measured, per slot and level,
   with each platform's `row_id`, and every earlier claim's verdict under
   `claims`. This is the source of "what held". When its answer is too large to
   use, read one `bucket` at a time. Pass `levels: "all"` only when you check a
-  claim against a `listed` level.
+  claim against a `listed` level. Its `reading_counts` says, per platform, how
+  many posts the check measured at 7 days (`same_age`), how many on their latest
+  value (`not_same_age`), and how many younger than 7 days it left out
+  (`left_out`). When `left_out` is above 0, say how many posts were too new to
+  count.
 - `get_playbook`: what Radical Tempo applies now, and `what_changed`. It
   explains why outputs look the way they do. It never overrides the readout.
 - `list_shelf`: clips ready to post (`shelf`) and posts already placed
@@ -80,9 +93,9 @@ Write the brief in at most 6 lines:
   that held: a `verdicts` entry with `outcome: "confirm"`, a claim `confirmed`,
   or `writes: true` with a positive `delta`;
 - the title pattern;
-- one experiment: what changes (`change`), the bucket that reads it (`reach`,
-  `watch`, or `stay`), and the ISO week whose weekly check reads it (`readWeek`,
-  written `<year>-W<week>`), a week after the posts go out.
+- one experiment: what changes (`change`), the funnel stage it should move
+  (`stage`), and the ISO week whose weekly check reads it (`readWeek`, written
+  `<year>-W<week>`), a week after the posts go out.
 
 Rules:
 
@@ -95,6 +108,23 @@ Rules:
 - One experiment a week. 2 changes at once read as neither.
 - A `conditioned_share` near 1 measures Radical Tempo's own output. Say so
   before you lean on that level.
+- A receipt with `same_age: false` has no 7-day reading for its metric, so the
+  check measured every post on its latest value and compared posts of different
+  ages. Say so before you lean on that row.
+
+Test each rule you draw from the brand's past posts before you plan a claim on
+it, e.g. "posts that open on a face hold better":
+
+- Call `test_claim` with the platform, the stage (`shown`, `hooked`, or `held`),
+  and the level's `attribute` and `level` as `get_channel_readout` lists them.
+- Relay its `verdict`. Never grade the numbers yourself.
+- `passed`: plan the claim.
+- `leaning`: never state the rule as proven. Propose `proposed_experiment` to
+  the user as next week's experiment, and plan no claim on the rule this week.
+- `not_supported`: drop the rule.
+- `not_yet_clear`: say why. When `reason` lists the levels the brand's posts
+  hold, test again with one of them.
+- A rule this week's experiment tests on new posts needs no `test_claim`.
 
 ### 3. Make
 
@@ -138,6 +168,8 @@ Rules:
 - Once the user approves, call `submit_claim` once per claim, in plain words,
   with the brief's `experiment` and one `runId` for the whole tick. A claim says
   one thing about one level.
+- For a claim on a rule `test_claim` tested, pass its `test_result` unchanged as
+  `testResult`.
 - Save the brief with `manage_brand_memory`. Start its first line with
   `Weekly brief`, then the ISO week. When last week's brief note exists, pass
   `operation: { "kind": "update", "memoryId": "<its id>" }`, so one brief
@@ -155,6 +187,8 @@ On the next tick, before you plan:
   not, `superseded` lost to a measured result, `unmeasured` and `waiting` are
   not read yet, `surfaced` is shown and never applied, `user` is the user's own
   edit.
+- When a claim's `measured` receipts carry `same_age: false`, say the check
+  compared posts of different ages on that platform.
 - Read last week's experiment against its `readWeek`. When that week is not in
   `weeks` yet, say it has not been checked.
 - Never resubmit a `contradicted` claim unchanged.

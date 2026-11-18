@@ -115,10 +115,9 @@ Two traps make "just take the newest video" the wrong rule:
   clip so the product isn't empty; both carry `isSampleContent: true`. Neither
   is something the creator uploaded, and neither is about them, so nothing you
   say about one is about their work. The sample clip is a clip, so the sample
-  video is the only one of the two that can be clipped — and it genuinely can
-  be. Prefer a video the creator added whenever the brand has one. Reach for the
-  sample video only when it is the only thing that fits, and name it as the
-  sample when you do.
+  video is the only one of the two that can be clipped. Use a video the creator
+  added whenever the brand has one. Never start work on the sample video unless
+  the creator asks for the sample by name.
 
 Match the wording the creator used:
 
@@ -143,10 +142,11 @@ that quietly lands on the wrong video looks exactly like one that worked.
    question. Say which video you took them to mean, how long it is, and why it
    won't work; name the newest video that would; and ask whether to use that
    one.
-3. **The only eligible video is the sample.** Clip it rather than stopping, and
-   say plainly that it is the sample video Radical Tempo seeded the brand with,
-   so the clips are a demonstration rather than their content. Offer to run it
-   again on their own footage once they upload something.
+3. **The only eligible video is the sample.** Do not clip it. Say that the brand
+   holds only the sample video Radical Tempo seeded it with, and ask them to
+   upload their own video in **Content** (**Upload New**). Clip the sample only
+   when they then ask for it by name, e.g. "use the demo video", and say that
+   the clips are a demonstration rather than their content.
 4. **Nothing in the brand is eligible at all.** Say so plainly and ask them to
    add a longer video.
 
@@ -456,8 +456,8 @@ details — targeting the right post, sizing, the choose-and-set loop — load
   and isn't a flow today.
 - **A bulk-publish control in the app** — not surfaced as a workflow today; in
   the UI each post is set up and sent on its own. This is about the interface
-  only: Cue can publish to several platforms in a single approval, so don't tell
-  a user it has to happen one platform at a time.
+  only: one approval covers one clip's posts on every platform it goes to, so
+  don't tell a user it has to happen one platform at a time.
 - **Batch review across a brand's assets** — exists in skill design but not yet
   surfaced to users.
 

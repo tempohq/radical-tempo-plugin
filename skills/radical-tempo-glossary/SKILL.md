@@ -23,8 +23,9 @@ answering.
 ### Asset
 
 An **asset** is the umbrella term for any piece of content in a brand. Today,
-every asset is either a **video** or a **clip**. Images and carousels are
-planned as additional asset types.
+every asset is either a **video** or a **clip**. Images are not assets: a brand
+posts images to Instagram as a **carousel**, 1 to 20 images published as one
+post, called a "Photo" when it holds 1. Carousels are rolling out.
 
 The user-facing surface for assets is the **Content** library — the table is
 labeled "Content," not "Assets." Use "video" or "clip" in conversation unless

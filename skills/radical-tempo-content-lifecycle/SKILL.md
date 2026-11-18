@@ -50,21 +50,31 @@ The user does not have to wait for this state to end before asking for clips.
 queued: the clips are cut as soon as processing finishes. Editing, reframing,
 and publishing do need a Ready video.
 
-**Typical processing time** (rough; varies with platform load and content
-complexity):
+**Processing time**, from upload to Ready. "Usual" is the median; "Can take" is
+the slowest few percent. Both include time spent waiting behind other videos:
 
-| Video length | Typical processing time |
-| ------------ | ----------------------- |
-| < 2 minutes  | ~150 seconds (~2.5 min) |
-| 2 – 5 min    | ~180 seconds (~3 min)   |
-| 5 – 15 min   | ~250 seconds (~4 min)   |
-| 15 – 30 min  | ~400 seconds (~7 min)   |
-| 30 – 60 min  | ~600 seconds (~10 min)  |
-| 60 – 120 min | ~900 seconds (~15 min)  |
+| Video length | Usual   | Can take |
+| ------------ | ------- | -------- |
+| < 2 min      | ~5 min  | ~40 min  |
+| 2 – 5 min    | ~4 min  | ~10 min  |
+| 5 – 15 min   | ~6 min  | ~12 min  |
+| 15 – 30 min  | ~12 min | ~20 min  |
+| 30 – 60 min  | ~20 min | ~40 min  |
+| 60 – 120 min | ~30 min | ~60 min  |
 
-If a video has been processing much longer than these ranges, something has gone
-wrong. Suggest checking the asset's status and, if available, retrying the
-import or contacting support. Do not promise a service-level agreement (SLA).
+A short video can wait far longer than its usual time when many videos are
+queued, e.g. after a TikTok or Instagram import.
+
+- Quote the range, never the usual time alone: "a 22-minute video usually takes
+  about 12 minutes and can take 20 or more".
+- Never call a video stalled, stuck, or failed because of how long it has been
+  processing, or because its last update was a while ago. A video's last update
+  time does not show whether processing is still running. Only a **Failed**
+  status, or a failed job, says something went wrong.
+- When a video is past the "Can take" time and still **Processing**, say it is
+  taking longer than usual and is still running. Offer to check again later. Do
+  not tell the user to retry while it is still **Processing**.
+- Do not promise a service-level agreement (SLA).
 
 ### 3. Ready
 

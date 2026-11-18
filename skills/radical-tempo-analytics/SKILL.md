@@ -10,12 +10,11 @@ description: >-
   snapshot, never a trend; how a report picks its stories and speaks in the
   first person. Covers how posts did, what worked, why a clip won or lost, which
   video won, and what the best and worst posts have in common. Triggers:
-  performance, analytics, how did it do, what worked, why did it win, why did it
-  flop, best post, worst post, top clip, which platform, views, likes,
-  completion, watch time, share, retention, drop-off, hold, reach, pushed, the
-  algorithm, impressions, click-through, thumbnail, cover, cohort, trait,
-  pattern, percentile, benchmark, held like a top clip, weekly report, trend, up
-  or down, long-form, upload, chapters.
+  performance, analytics, why did it flop, top clip, which platform, views,
+  likes, completion, watch time, share, retention, drop-off, hold, reach,
+  pushed, the algorithm, impressions, click-through, thumbnail, cover, cohort,
+  trait, pattern, percentile, benchmark, weekly report, trend, long-form,
+  upload, chapters, audience, demographics, age.
 ---
 
 # Reading performance
@@ -65,10 +64,10 @@ and the table. You write only what you choose: a headline that is the take, 1 to
   low, best, or typical: state it, or leave the word out.
 - The first second is never a finding. Every clip on every platform loses
   viewers there. Read the opening from the third second on.
-- Write in the first person, as Cue: "I'd cut this at the hold". Open on the
-  opinion, then the figures that back it, then what not to read into it ("don't
-  chase the Instagram number, it's one spike"), then the move. Commit to a
-  reading. On-screen content stays correlational.
+- Write in the first person: "I'd cut this at the hold". Open on the opinion,
+  then the figures that back it, then what not to read into it ("don't chase the
+  Instagram number, it's one spike"), then the move. Commit to a reading.
+  On-screen content stays correlational.
 - A headline is the take, never a list of stages: "The feed gave this one a day
   and it earned a second", never "Reach beyond subscribers; partial stay".
 - A quiet week is a valid report: no story, and a headline that says nothing
@@ -181,18 +180,23 @@ the creator reads.
 
 ## Which tool answers which question
 
-The tools take 3 input shapes. Read each tool's schema before you call it.
+The tools take 4 input shapes. Read each tool's schema before you call it.
 
 - `compare_performance_traits` and `get_performance_report` take a `brandId`, a
   `scope` keyed on `kind` (`brand`, `collection`, `folder`, `video_family`, or
   `assets`), `publishedWithinDays`, and a top-level `platforms`. To cover a
   chosen set of videos, pass `{ "kind": "assets", "assetIds": [...] }`, at most
   50 of them.
+- Both also take `assetKind` (`clip` or `upload`) and `minDurationSeconds` /
+  `maxDurationSeconds`. When the brand posts both clips and full uploads, pass
+  `assetKind` before you compare or rank posts.
 - `lookup_post_performance` takes a `brandId` and one `assetId`.
   `get_retention_moments` takes one `assetId`, `get_drop_point_patterns` one
   `asset_id`, and `get_clip_evidence` one `assetId` and a `platform`.
 - `get_corpus_percentile` takes a `feature`, an `outcome`, and a `cell`: the
   platform, with an optional format and content type.
+- `get_audience_profile` takes a `scope`: a `brandId`, a `window` or
+  `publishedWithinDays`, and `platforms`. It reads accounts, never one video.
 
 | Question                                                  | Tool                           |
 | --------------------------------------------------------- | ------------------------------ |
@@ -206,10 +210,12 @@ The tools take 3 input shapes. Read each tool's schema before you call it.
 | Where one trait of a video lands against videos like it   | `get_corpus_percentile`        |
 | A table of posts, grouped by label, folder, or format     | `get_performance_report`       |
 | The chapters of an upload, or of a clip's source          | `get_chapters`                 |
+| Who the audience is: age, gender, country, followers      | `get_audience_profile`         |
 | Up or down against last week; a share of the week's views | No tool here states it. Say so |
 
 `get_performance_report`'s `facts` state each group's total and its top and
-bottom post. Any other ranking or "more than" is one no fact states.
+bottom post. Any other ranking or "more than" is one no fact states, except a
+comparison of groups you choose, which "The comparisons that exist" covers.
 
 Make independent reads in the same step.
 
@@ -229,15 +235,20 @@ A post published 3 days ago has had 3 days to gather views, and one published 80
 days ago has had 80. Their raw totals measure age. Say the age with the figure,
 or leave the comparison out.
 
-## The 2 comparisons that exist
+## The comparisons that exist
 
-| Comparison                         | Tool                         | What it supports                       |
-| ---------------------------------- | ---------------------------- | -------------------------------------- |
-| The brand's best against its worst | `compare_performance_traits` | "The posts that did best were shorter" |
-| The wider corpus                   | `get_corpus_percentile`      | "In the top quarter of similar videos" |
+| Comparison                         | Tool                         | What it supports                                                             |
+| ---------------------------------- | ---------------------------- | ---------------------------------------------------------------------------- |
+| The brand's best against its worst | `compare_performance_traits` | "The posts that did best were shorter"                                       |
+| The wider corpus                   | `get_corpus_percentile`      | "In the top quarter of similar videos"                                       |
+| Groups of posts you choose         | `get_performance_report`     | "On TikTok, hooks that ask a question had the higher median stayed to watch" |
 
 - Each places a figure against other posts' figures, which is a real statement
   and is not a trend.
+- Compare groups you choose when the question names a trait no tool measures,
+  e.g. what the hook text says. Read each post's `hookText` and metrics from
+  `get_performance_report`, sort the posts into groups, and compute each group's
+  median. Follow the comparison rules in that tool's description.
 - No tool here states a week-over-week change, a post's percentile among the
   brand's own posts, or a hold against the brand's own tiers. Say what you
   cannot tell them.
@@ -266,6 +277,8 @@ posts and states where their traits differ.
 
 - A gap is an observation: "the posts that did best were shorter".
 - Never a cause: "they did best because they were shorter".
+- Compare one kind at a time. Over a mix of clips and full uploads, a length or
+  hashtag gap measures the format, not the posts.
 - Below 6 posts the cohorts mean nothing. Widen the window and say you did, or
   say the sample is too small and stop.
 - One window's clips on 3 platforms are one clip set, not 3 cohorts. A split
@@ -308,6 +321,50 @@ states the percentile it lands at with the count of comparable videos.
   platform". It is the brands Radical Tempo measures, not the medium.
 - A standing is an association, never a cause: "it held like videos with a
   number in the title", never "it held because of the number".
+
+## What an audience figure may claim
+
+`get_audience_profile` states, per connected account: its followers, the age,
+gender, and top countries of its audience, the change in a TikTok business
+account's followers, and the share of a YouTube channel's views that came from
+subscribers. It also states the groups of the brand's posts that reached a
+similar audience, per platform.
+
+- Each platform measures its audience on its own basis, and the fact's sentence
+  names it. Keep the basis in your sentence.
+
+  | Platform  | A demographic share is a share of                              |
+  | --------- | -------------------------------------------------------------- |
+  | YouTube   | Views over the weeks the window touches                        |
+  | Facebook  | View time on the Page's long-form videos, to date              |
+  | TikTok    | Followers of the business account                              |
+  | Instagram | Followers, and separately the accounts that engaged in 30 days |
+
+- A share of followers says who follows. A share of views says who watched.
+  Never write one as the other: "62% of the TikTok followers are women", never
+  "62% of TikTok viewers are women".
+- Never compare a share on one basis with a share on another. "More women on
+  TikTok than on YouTube" compares followers with views: state each on its own.
+- A demographic share describes an account, never one video.
+- An audience group is a set of the brand's posts on one platform that reached a
+  similar audience, named by how it differs from the brand's medians, e.g. "more
+  new viewers and more women". A group can be close to the brand's medians on
+  every measure, and 2 groups can share a name; tell those apart by their size
+  and shares. Say what the group's posts reached, never why. Never compare a
+  group on one platform with a group on another.
+- A platform with too few posts to group, or with no named groups, has a fact
+  that says so. Say that instead of naming groups. Never say a platform's posts
+  reach the same audience: no named groups can also mean the posts did not split
+  into groups large enough to keep.
+- A share is a description, never a cause: "viewers aged 25 to 34 watched 38% of
+  the views", never "the channel grew because of 25 to 34 year olds".
+- Each fact names its own dates. A follower share is a snapshot "as of" a week,
+  not a change over the window.
+- The subscriber share is the channel's over the window, not one post's.
+- A platform with nothing to state answers `available: false` with a reason, per
+  platform. YouTube reports demographics for some channels only. TikTok reports
+  them for a business account only. Instagram reports none for an account under
+  100 followers. Say what the platform does not report. Never call it zero.
 
 ## When a tool says it has nothing
 

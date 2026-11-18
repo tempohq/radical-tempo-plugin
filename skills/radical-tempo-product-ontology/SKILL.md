@@ -38,7 +38,7 @@ identity, not one specific channel.
 
 The UI uses "brand" everywhere; "workspace" is internal-only.
 
-## Asset: video, clip, (and planned: image, carousel)
+## Asset: video, clip
 
 An **asset** is any piece of content in a brand. Today, every asset is one of
 two kinds:
@@ -48,8 +48,10 @@ two kinds:
 - **Clip** — a derivative short-form asset built from a video. Clips are what
   get published.
 
-Image and carousel are planned types; not live today. Don't preemptively offer
-them as features.
+Images are not assets. A brand posts images to Instagram as a **carousel**: 1 to
+20 images in order, published as one post, and shown as a "Photo" when it holds
+1 image. Carousels are rolling out. Offer one only where you can create a
+carousel for the brand.
 
 Every clip names exactly one video it was cut from — its **source video** — so a
 video has a one-to-many relationship with its clips, and that link is what "more

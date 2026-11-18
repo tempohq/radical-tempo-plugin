@@ -7,11 +7,11 @@ description: >-
   it cites, and nothing that would embarrass the brand. Gives the finding shape
   `review_batch` uses, so your soft findings sit beside its hard ones, and says
   when a soft finding can be waived. Load at the review step of the
-  `channel-manager` weekly tick, or whenever the user asks you to review clips,
-  titles, a batch, or a brief before it goes out. Triggers: review, review the
-  batch, check the clips, quality check, rubric, soft check, soft finding,
-  waive, is this ready, before I publish, hook, title, payoff, cut sentence,
-  speaker, off-brand, embarrassing, brief check.
+  `channel-manager` weekly tick or the `campaign-manager` batch, or whenever the
+  user asks you to review clips, titles, a batch, or a brief before it goes out.
+  Triggers: review, review the batch, check the clips, quality check, rubric,
+  soft check, soft finding, waive, is this ready, before I publish, hook, title,
+  payoff, cut sentence, speaker, off-brand, embarrassing, brief check.
 ---
 
 # Channel review rubric

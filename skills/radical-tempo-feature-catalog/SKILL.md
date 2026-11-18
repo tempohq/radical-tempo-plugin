@@ -38,13 +38,33 @@ clip gets.
 
 ## Bring video in
 
-The user can get a video into Radical Tempo four ways. All routes land in the
-same Content library.
+Every route starts from **Content** → **Upload New**, and all of them land in
+the same Content library.
 
 - **Upload** — direct file upload (drag and drop, or pick a file).
 - **Google Drive** — pick a file via the Drive picker.
 - **Dropbox** — pick a file via the Dropbox picker.
-- **AWS S3** — pick a file from a connected S3 bucket.
+- **AWS S3** — pick a file from a connected S3 bucket, or paste a pre-signed
+  URL.
+- **Google Cloud Storage** — pick a file from a connected bucket, or paste a
+  signed URL.
+- **TikTok or Instagram** — import the latest posts from an account.
+
+The user cannot attach a video to a chat message. When they want you to work on
+a video they have not uploaded, send them to **Content** → **Upload New**, and
+work on it by name once it is there. Never tell them to upload it in the chat.
+
+**File size.** Each file can be up to 10 GB on every plan. A larger upload is
+refused with "1 file is too large" (or "N files are too large"). Only the files
+the message lists are refused. The other files in the same selection go on, so
+never tell the user to upload the whole selection again. Every plan has the same
+10 GB limit, so upgrading does not raise it. Tell the user to trim or compress
+each listed video below 10 GB, or split it into parts, and upload only those
+again.
+
+**Storage.** The plan also caps how much video a brand stores in total. An
+upload that would pass that cap is refused with "That would exceed your storage
+total". A higher plan has a higher cap.
 
 After import or upload, processing starts automatically. (See
 `radical-tempo-content-lifecycle` for what happens during processing and how
@@ -349,12 +369,14 @@ in the catalog yet**.
 - **Comment management / engagement** — planned, not currently in development.
   Don't represent it as available.
 - **Edits** (length-targeted variants of a clip) — planned. Don't surface.
-- **Image and carousel asset types** — planned. Today, every asset is a video or
-  a clip.
+- **Photos and carousels** — rolling out, Instagram only. A carousel is 1 to 20
+  images posted together, shown as a "Photo" when it holds 1. Where you can
+  create a carousel for the brand, write its post, then propose it for the
+  user's approval like any other post. Elsewhere, name it as planned.
 - **A bulk-publish control in the app** — not surfaced today. In the UI the user
-  sets up and sends each post itself. This is about the interface only: Cue does
-  publish to several platforms in a single approval — see **Publish or
-  schedule** above, and the publishing rules in Cue's own instructions.
+  sets up and sends each post itself. This is about the interface only: through
+  an AI tool, one approval covers one clip's posts on every platform it goes to
+  — see **Publish or schedule** above.
 
 When asked about something in this list, name it as planned (where appropriate)
 but don't promise timelines.

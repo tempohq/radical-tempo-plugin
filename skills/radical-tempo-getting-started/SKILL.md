@@ -38,14 +38,15 @@ completed. Progress is per-user/per-brand.
 
 ### 1. Upload or import a video
 
-Get a source video in. The fastest path is direct upload (drag a file into the
-Content view). Alternative imports: pick from Google Drive or Dropbox, or pull
-from S3. Any of them lands in the same Content library and starts processing
-automatically.
+Get a source video in. The fastest path is direct upload: drag a file into the
+Content view, or click **Upload New**. Alternative imports: pick from Google
+Drive or Dropbox, or pull from S3 or Google Cloud Storage. Any of them lands in
+the same Content library and starts processing automatically. Each file can be
+up to 10 GB.
 
-What to expect: the asset appears with a **Processing** label. Typical times by
-length range from ~2.5 minutes (for short videos) to ~15 minutes (for hour-plus
-videos). See `radical-tempo-content-lifecycle` for the full table.
+What to expect: the asset appears with a **Processing** label. Usual times by
+length range from about 5 minutes (for short videos) to about 30 minutes (for
+hour-plus videos). See `radical-tempo-content-lifecycle` for the full table.
 
 While the user waits, step 3 (connect a platform) is a productive use of the
 time — and it makes step 2 produce better output.
